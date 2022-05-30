@@ -28,6 +28,7 @@ dependencies:
   path_provider: ^2.0.10
   provider: ^6.0.3
   retrofit: ^3.0.1+1
+  sliding_up_panel: ^2.0.0+1
   surf_logger: ^1.0.2
   xml: 5.3.1
 

@@ -7,6 +7,7 @@ import 'package:map_tracker/features/primary/screens/main_screen/main_screen_wid
 import 'package:map_tracker/features/primary/service/model/map_features.dart';
 import 'package:map_tracker/features/primary/service/model/menu_item.dart';
 import 'package:map_tracker/features/primary/widgets/dropdown_menu_widget.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 /// Initialization screens.
 class MainScreen extends ElementaryWidget<IMainWidgetModel> {
@@ -30,7 +31,6 @@ class MainScreen extends ElementaryWidget<IMainWidgetModel> {
                     center: features.center,
                     zoom: features.zoom,
                     maxZoom: 18.25,
-                    onTap: wm.onTap(),
                   ),
                   layers: [
                     features.mapType,
@@ -69,6 +69,18 @@ class MainScreen extends ElementaryWidget<IMainWidgetModel> {
                       },
                     ),
                   ),
+                ),
+                SlidingUpPanel(
+                  panel: Center(
+                    child: Text(features.description),
+                  ),
+                  minHeight: 0,
+                  backdropEnabled: true,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
+                  ),
+                  controller: wm.panelController,
                 ),
               ],
             );

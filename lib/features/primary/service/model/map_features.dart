@@ -7,11 +7,13 @@ class MapFeatures {
   final double zoom;
   final LayerOptions mapType;
   final List<Marker> markers;
+  final String description;
 
   MapFeatures({
     required this.center,
     required this.zoom,
     required this.mapType,
     required this.markers,
+    required this.description,
   });
 }

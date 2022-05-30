@@ -15,19 +15,20 @@ extension GetPlaceMarkEntityCollection on Isar {
 const PlaceMarkEntitySchema = CollectionSchema(
   name: 'PlaceMarkEntity',
   schema:
-      '{"name":"PlaceMarkEntity","idName":"id","properties":[{"name":"description","type":"String"},{"name":"latitude","type":"Double"},{"name":"longitude","type":"Double"},{"name":"name","type":"String"},{"name":"styleUrl","type":"String"}],"indexes":[],"links":[{"name":"icon","target":"PlaceMarkIconEntity"}]}',
+      '{"name":"PlaceMarkEntity","idName":"id","properties":[{"name":"description","type":"String"},{"name":"icon","type":"String"},{"name":"latitude","type":"Double"},{"name":"longitude","type":"Double"},{"name":"name","type":"String"},{"name":"styleUrl","type":"String"}],"indexes":[],"links":[]}',
   idName: 'id',
   propertyIds: {
     'description': 0,
-    'latitude': 1,
-    'longitude': 2,
-    'name': 3,
-    'styleUrl': 4
+    'icon': 1,
+    'latitude': 2,
+    'longitude': 3,
+    'name': 4,
+    'styleUrl': 5
   },
   listProperties: {},
   indexIds: {},
   indexValueTypes: {},
-  linkIds: {'icon': 0},
+  linkIds: {},
   backlinkLinkNames: {},
   getId: _placeMarkEntityGetId,
   setId: _placeMarkEntitySetId,
@@ -55,7 +56,7 @@ void _placeMarkEntitySetId(PlaceMarkEntity object, int id) {
 }
 
 List<IsarLinkBase> _placeMarkEntityGetLinks(PlaceMarkEntity object) {
-  return [object.icon];
+  return [];
 }
 
 void _placeMarkEntitySerializeNative(
@@ -69,15 +70,18 @@ void _placeMarkEntitySerializeNative(
   final value0 = object.description;
   final _description = IsarBinaryWriter.utf8Encoder.convert(value0);
   dynamicSize += (_description.length) as int;
-  final value1 = object.latitude;
-  final _latitude = value1;
-  final value2 = object.longitude;
-  final _longitude = value2;
-  final value3 = object.name;
-  final _name = IsarBinaryWriter.utf8Encoder.convert(value3);
+  final value1 = object.icon;
+  final _icon = IsarBinaryWriter.utf8Encoder.convert(value1);
+  dynamicSize += (_icon.length) as int;
+  final value2 = object.latitude;
+  final _latitude = value2;
+  final value3 = object.longitude;
+  final _longitude = value3;
+  final value4 = object.name;
+  final _name = IsarBinaryWriter.utf8Encoder.convert(value4);
   dynamicSize += (_name.length) as int;
-  final value4 = object.styleUrl;
-  final _styleUrl = IsarBinaryWriter.utf8Encoder.convert(value4);
+  final value5 = object.styleUrl;
+  final _styleUrl = IsarBinaryWriter.utf8Encoder.convert(value5);
   dynamicSize += (_styleUrl.length) as int;
   final size = staticSize + dynamicSize;
 
@@ -86,10 +90,11 @@ void _placeMarkEntitySerializeNative(
   final buffer = IsarNative.bufAsBytes(rawObj.buffer, size);
   final writer = IsarBinaryWriter(buffer, staticSize);
   writer.writeBytes(offsets[0], _description);
-  writer.writeDouble(offsets[1], _latitude);
-  writer.writeDouble(offsets[2], _longitude);
-  writer.writeBytes(offsets[3], _name);
-  writer.writeBytes(offsets[4], _styleUrl);
+  writer.writeBytes(offsets[1], _icon);
+  writer.writeDouble(offsets[2], _latitude);
+  writer.writeDouble(offsets[3], _longitude);
+  writer.writeBytes(offsets[4], _name);
+  writer.writeBytes(offsets[5], _styleUrl);
 }
 
 PlaceMarkEntity _placeMarkEntityDeserializeNative(
@@ -99,12 +104,12 @@ PlaceMarkEntity _placeMarkEntityDeserializeNative(
     List<int> offsets) {
   final object = PlaceMarkEntity();
   object.description = reader.readString(offsets[0]);
+  object.icon = reader.readString(offsets[1]);
   object.id = id;
-  object.latitude = reader.readDouble(offsets[1]);
-  object.longitude = reader.readDouble(offsets[2]);
-  object.name = reader.readString(offsets[3]);
-  object.styleUrl = reader.readString(offsets[4]);
-  _placeMarkEntityAttachLinks(collection, id, object);
+  object.latitude = reader.readDouble(offsets[2]);
+  object.longitude = reader.readDouble(offsets[3]);
+  object.name = reader.readString(offsets[4]);
+  object.styleUrl = reader.readString(offsets[5]);
   return object;
 }
 
@@ -116,12 +121,14 @@ P _placeMarkEntityDeserializePropNative<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 2:
       return (reader.readDouble(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
     default:
       throw 'Illegal propertyIndex';
@@ -132,6 +139,7 @@ dynamic _placeMarkEntitySerializeWeb(
     IsarCollection<PlaceMarkEntity> collection, PlaceMarkEntity object) {
   final jsObj = IsarNative.newJsObject();
   IsarNative.jsObjectSet(jsObj, 'description', object.description);
+  IsarNative.jsObjectSet(jsObj, 'icon', object.icon);
   IsarNative.jsObjectSet(jsObj, 'id', object.id);
   IsarNative.jsObjectSet(jsObj, 'latitude', object.latitude);
   IsarNative.jsObjectSet(jsObj, 'longitude', object.longitude);
@@ -144,6 +152,7 @@ PlaceMarkEntity _placeMarkEntityDeserializeWeb(
     IsarCollection<PlaceMarkEntity> collection, dynamic jsObj) {
   final object = PlaceMarkEntity();
   object.description = IsarNative.jsObjectGet(jsObj, 'description') ?? '';
+  object.icon = IsarNative.jsObjectGet(jsObj, 'icon') ?? '';
   object.id = IsarNative.jsObjectGet(jsObj, 'id');
   object.latitude =
       IsarNative.jsObjectGet(jsObj, 'latitude') ?? double.negativeInfinity;
@@ -151,8 +160,6 @@ PlaceMarkEntity _placeMarkEntityDeserializeWeb(
       IsarNative.jsObjectGet(jsObj, 'longitude') ?? double.negativeInfinity;
   object.name = IsarNative.jsObjectGet(jsObj, 'name') ?? '';
   object.styleUrl = IsarNative.jsObjectGet(jsObj, 'styleUrl') ?? '';
-  _placeMarkEntityAttachLinks(
-      collection, IsarNative.jsObjectGet(jsObj, 'id'), object);
   return object;
 }
 
@@ -160,6 +167,8 @@ P _placeMarkEntityDeserializePropWeb<P>(Object jsObj, String propertyName) {
   switch (propertyName) {
     case 'description':
       return (IsarNative.jsObjectGet(jsObj, 'description') ?? '') as P;
+    case 'icon':
+      return (IsarNative.jsObjectGet(jsObj, 'icon') ?? '') as P;
     case 'id':
       return (IsarNative.jsObjectGet(jsObj, 'id')) as P;
     case 'latitude':
@@ -178,9 +187,7 @@ P _placeMarkEntityDeserializePropWeb<P>(Object jsObj, String propertyName) {
 }
 
 void _placeMarkEntityAttachLinks(
-    IsarCollection col, int id, PlaceMarkEntity object) {
-  object.icon.attach(col, col.isar.placeMarkIconEntitys, 'icon', id);
-}
+    IsarCollection col, int id, PlaceMarkEntity object) {}
 
 extension PlaceMarkEntityQueryWhereSort
     on QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QWhere> {
@@ -352,6 +359,113 @@ extension PlaceMarkEntityQueryFilter
     return addFilterConditionInternal(FilterCondition(
       type: ConditionType.matches,
       property: 'description',
+      value: pattern,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition>
+      iconEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.eq,
+      property: 'icon',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition>
+      iconGreaterThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.gt,
+      include: include,
+      property: 'icon',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition>
+      iconLessThan(
+    String value, {
+    bool caseSensitive = true,
+    bool include = false,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.lt,
+      include: include,
+      property: 'icon',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition>
+      iconBetween(
+    String lower,
+    String upper, {
+    bool caseSensitive = true,
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition.between(
+      property: 'icon',
+      lower: lower,
+      includeLower: includeLower,
+      upper: upper,
+      includeUpper: includeUpper,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition>
+      iconStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.startsWith,
+      property: 'icon',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition>
+      iconEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.endsWith,
+      property: 'icon',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition>
+      iconContains(String value, {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.contains,
+      property: 'icon',
+      value: value,
+      caseSensitive: caseSensitive,
+    ));
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition>
+      iconMatches(String pattern, {bool caseSensitive = true}) {
+    return addFilterConditionInternal(FilterCondition(
+      type: ConditionType.matches,
+      property: 'icon',
       value: pattern,
       caseSensitive: caseSensitive,
     ));
@@ -695,16 +809,7 @@ extension PlaceMarkEntityQueryFilter
 }
 
 extension PlaceMarkEntityQueryLinks
-    on QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QFilterCondition> {
-  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterFilterCondition> icon(
-      FilterQuery<PlaceMarkIconEntity> q) {
-    return linkInternal(
-      isar.placeMarkIconEntitys,
-      q,
-      'icon',
-    );
-  }
-}
+    on QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QFilterCondition> {}
 
 extension PlaceMarkEntityQueryWhereSortBy
     on QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QSortBy> {
@@ -716,6 +821,15 @@ extension PlaceMarkEntityQueryWhereSortBy
   QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterSortBy>
       sortByDescriptionDesc() {
     return addSortByInternal('description', Sort.desc);
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterSortBy> sortByIcon() {
+    return addSortByInternal('icon', Sort.asc);
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterSortBy>
+      sortByIconDesc() {
+    return addSortByInternal('icon', Sort.desc);
   }
 
   QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterSortBy> sortById() {
@@ -778,6 +892,15 @@ extension PlaceMarkEntityQueryWhereSortThenBy
     return addSortByInternal('description', Sort.desc);
   }
 
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterSortBy> thenByIcon() {
+    return addSortByInternal('icon', Sort.asc);
+  }
+
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterSortBy>
+      thenByIconDesc() {
+    return addSortByInternal('icon', Sort.desc);
+  }
+
   QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QAfterSortBy> thenById() {
     return addSortByInternal('id', Sort.asc);
   }
@@ -833,6 +956,11 @@ extension PlaceMarkEntityQueryWhereDistinct
     return addDistinctByInternal('description', caseSensitive: caseSensitive);
   }
 
+  QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QDistinct> distinctByIcon(
+      {bool caseSensitive = true}) {
+    return addDistinctByInternal('icon', caseSensitive: caseSensitive);
+  }
+
   QueryBuilder<PlaceMarkEntity, PlaceMarkEntity, QDistinct> distinctById() {
     return addDistinctByInternal('id');
   }
@@ -863,6 +991,10 @@ extension PlaceMarkEntityQueryProperty
   QueryBuilder<PlaceMarkEntity, String, QQueryOperations>
       descriptionProperty() {
     return addPropertyNameInternal('description');
+  }
+
+  QueryBuilder<PlaceMarkEntity, String, QQueryOperations> iconProperty() {
+    return addPropertyNameInternal('icon');
   }
 
   QueryBuilder<PlaceMarkEntity, int?, QQueryOperations> idProperty() {

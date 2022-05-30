@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import 'package:map_tracker/features/primary/service/entity/entity.dart';
 
 part 'place_mark_entity.g.dart';
 
@@ -13,5 +12,5 @@ class PlaceMarkEntity {
   late String styleUrl;
   late double longitude;
   late double latitude;
-  final icon = IsarLink<PlaceMarkIconEntity>();
+  late String icon;
 }

@@ -19,7 +19,7 @@ Future<void> run() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   /// Init database
   final isar = await Isar.open(
-    schemas: [PlaceMarkEntitySchema, PlaceMarkIconEntitySchema],
+    schemas: [PlaceMarkEntitySchema],
     directory: (await getApplicationDocumentsDirectory()).path,
   );
   _initLogger();
