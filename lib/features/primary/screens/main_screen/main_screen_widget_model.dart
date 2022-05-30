@@ -75,7 +75,10 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, MainScreenModel> imp
 
   late final LayerOptions _mapType;
 
-  String _description = '';
+  PlaceMarkEntity _description = PlaceMarkEntity()
+    ..name = ''
+    ..description = ''
+    ..icon = '';
 
   @override
   ListenableState<MapFeatures> get features => _features;
@@ -92,14 +95,14 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, MainScreenModel> imp
   final List<Marker> _markers = [];
 
   /// Create an instance [MainScreenWidgetModel].
-  MainScreenWidgetModel({
-    required MainScreenModel model,
-    required this.mapService,
-    required this.coordinator,
-    required this.database,
-    required this.panelController,
-    required
-  }) : super(model);
+  MainScreenWidgetModel(
+      {required MainScreenModel model,
+      required this.mapService,
+      required this.coordinator,
+      required this.database,
+      required this.panelController,
+      required})
+      : super(model);
 
   @override
   Future<void> initWidgetModel() async {
@@ -120,7 +123,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, MainScreenModel> imp
           anchorPos: AnchorPos.align(AnchorAlign.top),
           builder: (ctx) => GestureDetector(
             onTap: () {
-              _description = entity.description;
+              _description = entity;
               _updateFeatures();
               panelController.open();
             },
@@ -139,7 +142,7 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, MainScreenModel> imp
         zoom: 15.0,
         mapType: _mapType,
         markers: _markers,
-        description: _description,
+        placeMark: _description,
       ),
     );
   }
