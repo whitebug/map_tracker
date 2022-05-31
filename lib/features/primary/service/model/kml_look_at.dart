@@ -1,4 +1,4 @@
-import 'package:map_tracker/features/primary/service/model/kml_option.dart';
+import 'package:map_tracker/features/primary/service/model/model.dart';
 import 'package:xml/xml.dart';
 import 'package:intl/intl.dart';
 

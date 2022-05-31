@@ -8,16 +8,8 @@ import 'package:map_tracker/assets/colors/colors.dart';
 import 'package:map_tracker/features/app/di/app_scope.dart';
 import 'package:map_tracker/features/navigation/service/coordinator.dart';
 import 'package:map_tracker/features/primary/screens/main_screen/main_screen.dart';
-import 'package:map_tracker/features/primary/service/entity/entity.dart';
-import 'package:map_tracker/features/primary/service/model/kml_place_mark.dart';
-import 'package:map_tracker/features/primary/service/model/kml_style.dart';
-import 'package:map_tracker/features/primary/service/model/kml_style_map.dart';
-import 'package:map_tracker/features/primary/service/model/main_menu_items.dart';
-import 'package:map_tracker/features/primary/service/model/map_features.dart';
-import 'package:map_tracker/features/primary/service/model/menu_item.dart';
-import 'package:map_tracker/features/primary/service/map_service.dart';
-import 'package:map_tracker/features/primary/widgets/dropdown_item.dart';
-import 'package:map_tracker/features/primary/widgets/network_map_marker.dart';
+import 'package:map_tracker/features/primary/service/service.dart';
+import 'package:map_tracker/features/primary/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -78,6 +70,9 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, MainScreenModel> imp
   PlaceMarkEntity _description = PlaceMarkEntity()
     ..name = ''
     ..description = ''
+    ..styleUrl = ''
+    ..longitude = 0
+    ..latitude = 0
     ..icon = '';
 
   @override
@@ -125,7 +120,11 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, MainScreenModel> imp
             onTap: () {
               _description = entity;
               _updateFeatures();
-              panelController.open();
+              panelController.animatePanelToPosition(
+                snapPoint,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeIn,
+              );
             },
             child: NetworkMapMarker(imageUrl: entity.icon),
           ),
@@ -150,49 +149,11 @@ class MainScreenWidgetModel extends WidgetModel<MainScreen, MainScreenModel> imp
   _mainMenuOnChanged(MapMenuItem item) async {
     switch (item) {
       case MainMenuItems.kmz:
-        String? kml = await mapService.getKml();
-        if (kml != null) {
-          List<KmlStyle> styles = KmlStyle.fromKmlToList(kml);
-          List<KmlStyleMap> styleMaps = KmlStyleMap.fromKmlToList(kml);
-          List<KmlPlaceMark> kmlPlaceMarks = KmlPlaceMark.fromKmlToList(kml);
-          Map<String, List<KmlPlaceMark>> sortedPlaceMarks = mapService.sortPlaceMarks(kmlPlaceMarks: kmlPlaceMarks);
-          List<String> styleUrls = sortedPlaceMarks.keys.toList(growable: false);
-          for (int i = 0; i < styleUrls.length; i++) {
-            final markerImageUrl = mapService.getMarkerUrl(
-              styleUrl: styleUrls[i],
-              styles: styles,
-              styleMaps: styleMaps,
-              kmlPlaceMarks: kmlPlaceMarks,
-            );
-            final List<KmlPlaceMark> list = sortedPlaceMarks[styleUrls[i]] ?? [];
-            if (list.isNotEmpty) {
-              for (int i = 0; i < list.length; i++) {
-                final KmlPlaceMark currentKml = list[i];
-                final coordinates = currentKml.point.coordinates;
-                if (coordinates != null) {
-                  final placeMark = PlaceMarkEntity()
-                    ..name = currentKml.name
-                    ..description = currentKml.description
-                    ..styleUrl = currentKml.styleUrl
-                    ..latitude = coordinates[1]
-                    ..longitude = coordinates[0]
-                    ..icon = markerImageUrl;
-                  database.writeTxn((isar) async {
-                    await isar.placeMarkEntitys.put(placeMark);
-                  });
-                }
-              }
-            }
-          }
-        }
+        await mapService.readKmzToDataBase(database: database);
         await _addMarkers();
         break;
-      case MainMenuItems.share:
-        final List<PlaceMarkEntity> markers = await database.placeMarkEntitys.where().findAll();
-        await database.writeTxn((isar) async {
-          final List<int> ids = markers.map((e) => e.id!).toList();
-          await database.placeMarkEntitys.deleteAll(ids);
-        });
+      case MainMenuItems.delete:
+        await mapService.deleteMarkersFromDatabase(database: database);
         _markers.clear();
         _updateFeatures();
         break;

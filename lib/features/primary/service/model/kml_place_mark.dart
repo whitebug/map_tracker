@@ -1,7 +1,5 @@
-import 'package:map_tracker/features/primary/service/model/kml_look_at.dart';
+import 'package:map_tracker/features/primary/service/model/model.dart';
 import 'package:xml/xml.dart';
-
-import 'kml_point.dart';
 
 /// Details of some place at map
 /// <Placemark>

@@ -6,7 +6,7 @@ import 'package:map_tracker/features/app/di/app_scope.dart';
 import 'package:map_tracker/features/navigation/service/coordinator.dart';
 import 'package:map_tracker/features/primary/screens/splash_screen/splash_screen.dart';
 import 'package:map_tracker/features/primary/screens/splash_screen/splash_screen_model.dart';
-import 'package:map_tracker/features/primary/service/splash_ticker_service.dart';
+import 'package:map_tracker/features/primary/service/service.dart';
 import 'package:provider/provider.dart';
 
 /// Duration of splash screen in seconds
